@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder>{
 
     //создаём ArrayList для списка контактов
-    private ArrayList<Contact> contactArrayList;
+    private ArrayList<Contact> contactArrayList = new ArrayList<>();
 
     public void setContactArrayList(ArrayList<Contact> contactArrayList) {
         this.contactArrayList = contactArrayList;
@@ -37,8 +37,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.lastNameTextView.setText(contact.getLastName());
         holder.emailTextView.setText(contact.getEmail());
         holder.phoneNumberTextView.setText(contact.getPhoneNumber());
-
-
     }
 
     @Override

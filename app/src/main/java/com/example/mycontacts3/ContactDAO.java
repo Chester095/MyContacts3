@@ -17,7 +17,7 @@ public interface ContactDAO {
     @Query("Select * FROM contacts_table") // для получения всех контактов
     List<Contact> getAllContacts();
 
-    @Query("SELECT * FROM contacts_table WHERE concatId==:contactId") //метод который возвращает данные
+    @Query("SELECT * FROM contacts_table WHERE contactId==:contactId") //метод который возвращает данные
     Contact getContact(Long contactId);
 
     @Update

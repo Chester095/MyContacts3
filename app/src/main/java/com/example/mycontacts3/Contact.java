@@ -8,27 +8,27 @@ import androidx.room.PrimaryKey;
 public class Contact {
 
     @PrimaryKey(autoGenerate = true) //так как хотим чтобы ID генерировался автоматически указываем true
-    private long concatId;
+    private long contactId;
     private String firstName, lastName, email, phoneNumber;
 
     @Ignore //хотим чтобы этот конструктор игнорировался
     public Contact() {
     }
 
-    public Contact(long concatId, String firstName, String lastName, String email, String phoneNumber) {
-        this.concatId = concatId;
+    public Contact(long contactId, String firstName, String lastName, String email, String phoneNumber) {
+        this.contactId = contactId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public long getConcatId() {
-        return concatId;
+    public long getContactId() {
+        return contactId;
     }
 
-    public void setConcatId(long concatId) {
-        this.concatId = concatId;
+    public void setContactId(long concatId) {
+        this.contactId = contactId;
     }
 
     public String getFirstName() {

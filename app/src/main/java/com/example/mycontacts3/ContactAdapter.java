@@ -1,5 +1,6 @@
 package com.example.mycontacts3;
 
+import android.content.Context;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     //создаём ArrayList для списка контактов
     private ArrayList<Contact> contactArrayList = new ArrayList<>();
+    private MainActivity mainActivity;
+
+    public ContactAdapter(ArrayList<Contact> contactArrayList, MainActivity mainActivity) {
+        this.contactArrayList = contactArrayList;
+        this.mainActivity = mainActivity;
+    }
 
     public void setContactArrayList(ArrayList<Contact> contactArrayList) {
         this.contactArrayList = contactArrayList;
@@ -37,6 +44,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.lastNameTextView.setText(contact.getLastName());
         holder.emailTextView.setText(contact.getEmail());
         holder.phoneNumberTextView.setText(contact.getPhoneNumber());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.addAndEditContact(true, contact, position);
+
+            }
+        });
     }
 
     @Override

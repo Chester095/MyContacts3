@@ -7,9 +7,11 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -43,13 +45,28 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        contactAdapter = new ContactAdapter();
+        contactAdapter = new ContactAdapter(contactArrayList, MainActivity.this);
         recyclerView.setAdapter(contactAdapter);
 
         myContactsDatabase = Room.databaseBuilder(getApplicationContext(), MyContactsDatabase.class, "ContactsDB").build();
 
         loadContacts(); //загружаем данные
 
+        //создаём для реализации свайпа и удаления
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //первый параметр - Направление перетягивания(0- не используем)
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { //код который будет выполняться
+                Contact contact = contactArrayList.get(viewHolder.getAdapterPosition());
+                deleteContacts(contact);
+            }
+        }).attachToRecyclerView(recyclerView);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

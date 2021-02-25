@@ -11,45 +11,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Contact"
+        android:text="Операция"
         android:textSize="24sp"
         android:textStyle="bold"
         />
 
     <EditText
-        android:id="@+id/firstNameEditText"
+        android:id="@+id/itemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:textSize="24sp"
         android:gravity="top"
-        android:hint="First name" />
+        android:hint="Статья" />
 
     <EditText
-        android:id="@+id/lastNameEditText"
+        android:id="@+id/subItemEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:textSize="24sp"
         android:gravity="top"
-        android:hint="Last name" />
+        android:hint="Подстатья" />
 
     <EditText
-        android:id="@+id/emailEditText"
+        android:id="@+id/valueEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:textSize="24sp"
         android:gravity="top"
-        android:hint="Email" />
+        android:hint="Стоимость" />
 
     <EditText
-        android:id="@+id/phoneNumberEditText"
+        android:id="@+id/accountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:textSize="24sp"
         android:gravity="top"
-        android:hint="Phone number" />
+        android:hint="Счёт" />
 
 </LinearLayout>

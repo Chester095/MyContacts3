@@ -30,8 +30,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private MyBudgetDatabase myBudgetDatabase;
-    private ArrayList<Contact> contactArrayList = new ArrayList<>();
-    private ContactAdapter contactAdapter;
+    private ArrayList<Budget> budgetArrayList = new ArrayList<>();
+    private BudgetAdapter budgetAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        contactAdapter = new ContactAdapter(contactArrayList, MainActivity.this);
-        recyclerView.setAdapter(contactAdapter);
+        budgetAdapter = new BudgetAdapter(budgetArrayList, MainActivity.this);
+        recyclerView.setAdapter(budgetAdapter);
 
         myBudgetDatabase = Room.databaseBuilder(getApplicationContext(), MyBudgetDatabase.class, "ContactsDB").build();
 
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) { //код который будет выполняться
-                Contact contact = contactArrayList.get(viewHolder.getAdapterPosition());
-                deleteContacts(contact);
+                Budget budget = budgetArrayList.get(viewHolder.getAdapterPosition());
+                deleteContacts(budget);
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -76,32 +76,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void addAndEditContact(boolean isUpdate, Contact contact, int position) { // чтобы знать обновляем или добавляем контакт
+    public void addAndEditContact(boolean isUpdate, Budget budget, int position) { // чтобы знать обновляем или добавляем контакт
         LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
-        View view = layoutInflater.inflate(R.layout.add_edit_contact, null);
+        View view = layoutInflater.inflate(R.layout.add_edit_article, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setView(view);
 
         TextView contactTitleTextView = view.findViewById(R.id.contactTitleTextView);
-        EditText firstNameEditText = view.findViewById(R.id.firstNameEditText);
-        EditText lastNameEditText = view.findViewById(R.id.lastNameEditText);
-        EditText emailEditText = view.findViewById(R.id.emailEditText);
-        EditText phoneNumberEditText = view.findViewById(R.id.phoneNumberEditText);
+        EditText firstNameEditText = view.findViewById(R.id.itemEditText);
+        EditText lastNameEditText = view.findViewById(R.id.subItemEditText);
+        EditText emailEditText = view.findViewById(R.id.valueEditText);
+        EditText phoneNumberEditText = view.findViewById(R.id.accountEditText);
 
         //будем устанаваливать диалоги в зависимости от того редактируется контакт или редактируется
-        contactTitleTextView.setText(!isUpdate ? "Add contact" : "Edit contact");
+        contactTitleTextView.setText(!isUpdate ? "Добавить статью" : "Редактировать статью");
 
         //проводим проверку и редактируем контакт и получаем данные из соответствующего объекта контакт которые мы передаём в этот метод
-        if (isUpdate && contact != null) {
-            firstNameEditText.setText(contact.getFirstName());
-            lastNameEditText.setText(contact.getLastName());
-            emailEditText.setText(contact.getEmail());
-            phoneNumberEditText.setText(contact.getPhoneNumber());
+        if (isUpdate && budget != null) {
+            firstNameEditText.setText(budget.getItem());
+            lastNameEditText.setText(budget.getSubItem());
+            emailEditText.setText(budget.getValue());
+            phoneNumberEditText.setText(budget.getAccount());
         }
 
         // создаём диалог
         builder.setCancelable(false)/*чтобы нельзя было отменить*/
-                .setPositiveButton(isUpdate ? "Update" : "Save", /*подменяем наименование кнопки*/
+                .setPositiveButton(isUpdate ? "Обновить" : "Сохранить", /*подменяем наименование кнопки*/
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                                 } else if (TextUtils.isEmpty(phoneNumberEditText.getText().toString())) {
                                     Toast.makeText(MainActivity.this, "Enter phone number", Toast.LENGTH_SHORT).show();
                                 } else { //проверяем сохраняем или обновляем и выбираем какой метод запустить
-                                    if (isUpdate && contact != null) {
+                                    if (isUpdate && budget != null) {
                                         updateContact(firstNameEditText.getText().toString(),
                                                 lastNameEditText.getText().toString(),
                                                 emailEditText.getText().toString(),
@@ -140,27 +140,27 @@ public class MainActivity extends AppCompatActivity {
         new GetAllContactsAsyncTask().execute();
     }
 
-    private void deleteContacts(Contact contact) {
-        new DeleteContactAsyncTask().execute(contact);
+    private void deleteContacts(Budget budget) {
+        new DeleteContactAsyncTask().execute(budget);
     }
 
     private void addContacts(String firstName, String lastName, String email, String phoneNumber) {
-        Contact contact = new Contact(0, firstName, lastName, email, phoneNumber); //0 - номер будет автоматически добавлен
-        new AddContactAsyncTask().execute(contact);
+        Budget budget = new Budget(0, firstName, lastName, email, phoneNumber); //0 - номер будет автоматически добавлен
+        new AddContactAsyncTask().execute(budget);
     }
 
     private void updateContact(String firstName, String lastName, String email, String phoneNumber, int position) {
-        Contact contact = contactArrayList.get(position); //получаем из Аррей листа по позиции
-        contact.setFirstName(firstName);
-        contact.setLastName(lastName);
-        contact.setEmail(email);
-        contact.setPhoneNumber(phoneNumber);
+        Budget budget = budgetArrayList.get(position); //получаем из Аррей листа по позиции
+        budget.setItem(firstName);
+        budget.setSubItem(lastName);
+        budget.setValue(email);
+        budget.setAccount(phoneNumber);
 
         //запускаем AsyncTask
-        new UpdateContactAsyncTask().execute(contact);
+        new UpdateContactAsyncTask().execute(budget);
 
-        // и помещаем в contactArrayList позицию и обновлённый контакт
-        contactArrayList.set(position, contact);
+        // и помещаем в budgetArrayList позицию и обновлённый контакт
+        budgetArrayList.set(position, budget);
     }
 
     @Override
@@ -188,22 +188,22 @@ public class MainActivity extends AppCompatActivity {
     private class GetAllContactsAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            contactArrayList = (ArrayList<Contact>) myBudgetDatabase.getContactDao().getAllContacts();
+            budgetArrayList = (ArrayList<Budget>) myBudgetDatabase.getContactDao().getAllContacts();
             return null;
         }
 
         @Override  // заполняем RecycleView из Arraylist
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            contactAdapter.setContactArrayList(contactArrayList);
+            budgetAdapter.setBudgetArrayList(budgetArrayList);
         }
     }
 
 
-    private class DeleteContactAsyncTask extends AsyncTask<Contact, Void, Void> {
+    private class DeleteContactAsyncTask extends AsyncTask<Budget, Void, Void> {
         @Override
-        protected Void doInBackground(Contact... contacts) {
-            myBudgetDatabase.getContactDao().deleteContact(contacts[0]);
+        protected Void doInBackground(Budget... budgets) {
+            myBudgetDatabase.getContactDao().deleteContact(budgets[0]);
             return null;
         }
 
@@ -215,10 +215,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class AddContactAsyncTask extends AsyncTask<Contact, Void, Void> {
+    private class AddContactAsyncTask extends AsyncTask<Budget, Void, Void> {
         @Override
-        protected Void doInBackground(Contact... contacts) {
-            myBudgetDatabase.getContactDao().insertContact(contacts[0]);
+        protected Void doInBackground(Budget... budgets) {
+            myBudgetDatabase.getContactDao().insertContact(budgets[0]);
             return null;
         }
 
@@ -229,10 +229,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class UpdateContactAsyncTask extends AsyncTask<Contact, Void, Void> {
+    private class UpdateContactAsyncTask extends AsyncTask<Budget, Void, Void> {
         @Override
-        protected Void doInBackground(Contact... contacts) {
-            myBudgetDatabase.getContactDao().updateContact(contacts[0]);
+        protected Void doInBackground(Budget... budgets) {
+            myBudgetDatabase.getContactDao().updateContact(budgets[0]);
             return null;
         }
 

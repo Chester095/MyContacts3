@@ -10,19 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder>{
+public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.ContactViewHolder>{
 
     //создаём ArrayList для списка контактов
-    private ArrayList<Contact> contactArrayList = new ArrayList<>();
+    private ArrayList<Budget> budgetArrayList = new ArrayList<>();
     private MainActivity mainActivity;
 
-    public ContactAdapter(ArrayList<Contact> contactArrayList, MainActivity mainActivity) {
-        this.contactArrayList = contactArrayList;
+    public BudgetAdapter(ArrayList<Budget> budgetArrayList, MainActivity mainActivity) {
+        this.budgetArrayList = budgetArrayList;
         this.mainActivity = mainActivity;
     }
 
-    public void setContactArrayList(ArrayList<Contact> contactArrayList) {
-        this.contactArrayList = contactArrayList;
+    public void setBudgetArrayList(ArrayList<Budget> budgetArrayList) {
+        this.budgetArrayList = budgetArrayList;
         notifyDataSetChanged(); //извещение адаптера об изменении данных
     }
 
@@ -37,16 +37,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
 
-        Contact contact = contactArrayList.get(position);
-        holder.firstNameTextView.setText(contact.getFirstName());
-        holder.lastNameTextView.setText(contact.getLastName());
-        holder.emailTextView.setText(contact.getEmail());
-        holder.phoneNumberTextView.setText(contact.getPhoneNumber());
+        Budget budget = budgetArrayList.get(position);
+        holder.itemTextView.setText(budget.getItem());
+        holder.subItemTextView.setText(budget.getSubItem());
+        holder.valueTextView.setText(budget.getValue());
+        holder.accountTextView.setText(budget.getAccount());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.addAndEditContact(true, contact, position);
+                mainActivity.addAndEditContact(true, budget, position);
 
             }
         });
@@ -54,20 +54,20 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     @Override
     public int getItemCount() {
-        return contactArrayList.size();
+        return budgetArrayList.size();
     }
 
     class ContactViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView firstNameTextView, lastNameTextView, emailTextView, phoneNumberTextView;
+        private TextView itemTextView, subItemTextView, valueTextView, accountTextView;
 
         public ContactViewHolder(@NonNull View itemView) {
 
             super(itemView);
-            firstNameTextView = itemView.findViewById(R.id.firstNameTextView);
-            lastNameTextView = itemView.findViewById(R.id.lastNameTextView);
-            emailTextView = itemView.findViewById(R.id.emailTextView);
-            phoneNumberTextView = itemView.findViewById(R.id.phoneNumberTextView);
+            itemTextView = itemView.findViewById(R.id.itemTextView);
+            subItemTextView = itemView.findViewById(R.id.subItemTextView);
+            valueTextView = itemView.findViewById(R.id.valueTextView);
+            accountTextView = itemView.findViewById(R.id.accountTextView);
 
         }
     }

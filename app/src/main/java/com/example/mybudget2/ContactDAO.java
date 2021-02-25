@@ -12,19 +12,19 @@ import java.util.List;
 public interface ContactDAO {
 
     @Insert //добавление контактов
-    void insertContact(Contact contact);
+    void insertContact(Budget budget);
 
-    @Query("Select * FROM contacts_table") // для получения всех контактов
-    List<Contact> getAllContacts();
+    @Query("Select * FROM budget_table") // для получения всех контактов
+    List<Budget> getAllContacts();
 
-    @Query("SELECT * FROM contacts_table WHERE contactId==:contactId") //метод который возвращает данные
-    Contact getContact(Long contactId);
+    @Query("SELECT * FROM budget_table WHERE contactId==:contactId") //метод который возвращает данные
+    Budget getContact(Long contactId);
 
     @Update
-    void updateContact(Contact contact);
+    void updateContact(Budget budget);
 
     @Delete
-    void deleteContact(Contact contact);
+    void deleteContact(Budget budget);
 
 
 }

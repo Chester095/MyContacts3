@@ -1,11 +1,10 @@
-package com.example.mycontacts3;
+package com.example.mybudget2;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MyContactsDatabase myContactsDatabase;
+    private MyBudgetDatabase myBudgetDatabase;
     private ArrayList<Contact> contactArrayList = new ArrayList<>();
     private ContactAdapter contactAdapter;
 
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         contactAdapter = new ContactAdapter(contactArrayList, MainActivity.this);
         recyclerView.setAdapter(contactAdapter);
 
-        myContactsDatabase = Room.databaseBuilder(getApplicationContext(), MyContactsDatabase.class, "ContactsDB").build();
+        myBudgetDatabase = Room.databaseBuilder(getApplicationContext(), MyBudgetDatabase.class, "ContactsDB").build();
 
         loadContacts(); //загружаем данные
 
@@ -189,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
     private class GetAllContactsAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            contactArrayList = (ArrayList<Contact>) myContactsDatabase.getContactDao().getAllContacts();
+            contactArrayList = (ArrayList<Contact>) myBudgetDatabase.getContactDao().getAllContacts();
             return null;
         }
 
@@ -204,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
     private class DeleteContactAsyncTask extends AsyncTask<Contact, Void, Void> {
         @Override
         protected Void doInBackground(Contact... contacts) {
-            myContactsDatabase.getContactDao().deleteContact(contacts[0]);
+            myBudgetDatabase.getContactDao().deleteContact(contacts[0]);
             return null;
         }
 
@@ -219,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
     private class AddContactAsyncTask extends AsyncTask<Contact, Void, Void> {
         @Override
         protected Void doInBackground(Contact... contacts) {
-            myContactsDatabase.getContactDao().insertContact(contacts[0]);
+            myBudgetDatabase.getContactDao().insertContact(contacts[0]);
             return null;
         }
 
@@ -233,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
     private class UpdateContactAsyncTask extends AsyncTask<Contact, Void, Void> {
         @Override
         protected Void doInBackground(Contact... contacts) {
-            myContactsDatabase.getContactDao().updateContact(contacts[0]);
+            myBudgetDatabase.getContactDao().updateContact(contacts[0]);
             return null;
         }
 

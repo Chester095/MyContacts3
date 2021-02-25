@@ -1,4 +1,4 @@
-package com.example.mycontacts3;
+package com.example.mybudget2;
 
 import org.junit.Test;
 
